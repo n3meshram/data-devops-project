@@ -1,0 +1,39 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+
+            steps {
+
+                checkout scm
+
+            }
+
+        }
+
+        stage('Build Docker Image') {
+
+            steps {
+
+                bat 'docker build -t customer-etl .'
+
+            }
+
+        }
+
+        stage('Run ETL Pipeline') {
+
+            steps {
+
+                bat 'docker run customer-etl'
+
+            }
+
+        }
+
+    }
+
+}
