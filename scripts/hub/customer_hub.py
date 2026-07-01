@@ -9,11 +9,14 @@ from common.utils import get_batch_id
 from config.customer_config import *
 
 
-def customer_hub(batch_id):
+def customer_hub(batch_id, spark=None):
 
-    spark = SparkSession.builder \
-        .appName("Customer Hub Load") \
-        .getOrCreate()
+    should_stop_spark = False
+    if spark is None:
+        spark = SparkSession.builder \
+            .appName("Customer Hub Load") \
+            .getOrCreate()
+        should_stop_spark = True
 
     start_time = datetime.now()
 
@@ -181,7 +184,8 @@ def customer_hub(batch_id):
 
     )
 
-    spark.stop()
+    if should_stop_spark:
+        spark.stop()
 
 
 if __name__ == "__main__":

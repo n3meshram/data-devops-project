@@ -1,3 +1,4 @@
+from pyspark.sql import SparkSession
 from common.utils import get_batch_id
 
 from scripts.bronze.customer_bronze import customer_bronze
@@ -10,12 +11,22 @@ batch_id = get_batch_id()
 
 print(f"Pipeline Started : {batch_id}")
 
-customer_bronze(batch_id)
+spark = (
+    SparkSession.builder
+    .appName("Customer ETL Pipeline")
+    .config("spark.sql.artifact.dir", "/tmp/artifacts")
+    .getOrCreate()
+)
 
-customer_hub(batch_id)
+try:
+    customer_bronze(batch_id, spark=spark)
 
-customer_scd2(batch_id)
+    customer_hub(batch_id, spark=spark)
 
-customer_mart(batch_id)
+    customer_scd2(batch_id, spark=spark)
+
+    customer_mart(batch_id, spark=spark)
+finally:
+    spark.stop()
 
 print(f"Pipeline Completed : {batch_id}")

@@ -4,10 +4,14 @@ USER root
 
 WORKDIR /app
 
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
 
-CMD ["python3", "run_pipeline.py"]
+RUN mkdir -p /app/artifacts \
+    && chown -R spark:spark /app
+
+
+RUN pip3 install -r requirements.txt
+
+USER spark
+
+CMD ["python3","run_pipeline.py"]
