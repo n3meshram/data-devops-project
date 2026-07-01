@@ -1,0 +1,33 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+
+metadata:
+  name: customer-etl
+  namespace: spark-jobs
+
+spec:
+  type: Python
+  pythonVersion: "3"
+
+  mode: cluster
+
+  image: customer-etl:latest
+
+  imagePullPolicy: IfNotPresent
+
+  mainApplicationFile: local:///app/run_pipeline.py
+
+  sparkVersion: "4.0.0"
+
+  restartPolicy:
+    type: Never
+
+  driver:
+    cores: 1
+    memory: "1g"
+    serviceAccount: spark
+
+  executor:
+    instances: 2
+    cores: 1
+    memory: "1g"
