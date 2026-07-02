@@ -4,16 +4,16 @@ __pycache__/
 
 .ipynb_checkpoints/
 
-data/bronze/customer/
+data/bronze/*
+!data/bronze/.gitkeep
 
-data/hub/customer/
+data/hub/*
+!data/hub/.gitkeep
 
-data/hub/customer_tmp/
+data/mart/*
+!data/mart/.gitkeep
 
-data/mart/customer/
-
-data/mart/customer_tmp/
-
-data/reject/customer/
+data/reject/*
+!data/reject/.gitkeep
 
 logs/job_log.csv
