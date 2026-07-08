@@ -5,6 +5,8 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.crc
+.ipynb_checkpoints/
 
 # Virtual Environments
 venv/
@@ -41,6 +43,7 @@ metastore_db/
 # ==========================
 logs/*.csv
 *.log
+logs/job_log.csv
 
 # ==========================
 # Environment Variables
@@ -59,8 +62,17 @@ logs/*.csv
 # ==========================
 *.tar
 
+# ==========================
 # Pipeline Output
-data/bronze/
-data/hub/
-data/mart/
-data/reject/
+# ==========================
+data/bronze/*
+!data/bronze/.gitkeep
+
+data/hub/*
+!data/hub/.gitkeep
+
+data/mart/*
+!data/mart/.gitkeep
+
+data/reject/*
+!data/reject/.gitkeep

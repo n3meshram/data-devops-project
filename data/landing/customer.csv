@@ -1,7 +1,7 @@
 customer_id,first_name,last_name,email,phone,load_date
 1,John,Doe,john.doe@example.com,123-456-7890,2026-06-18
 1,John,Doe,john.doe@example.com,123-456-7890,2026-06-18
-2, Jane ,Smith,jane.smith@example.com,987-654-3210,2026-06-18
+2,Jane ,Smith,jane.smith@example.com,987-654-3210,2026-06-18
 3,,Brown,bob@example.com,555-1234,2026-06-18
 4,Alice,White,,111-2222,2026-06-18
 5,Tom,Wilson,tom@example.com,444-5555,2026-06-18
