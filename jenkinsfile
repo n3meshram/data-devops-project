@@ -12,7 +12,7 @@ pipeline {
 
         stage('Verify Python') {
             steps {
-                bat 'python --version'
+                bat '"C:\\Users\\Nitin\\AppData\\Local\\Programs\\Python\\Python314\\python.exe" --version'
             }
         }
 
