@@ -1,6 +1,8 @@
 from datetime import datetime
 import csv
 import os
+import logging
+import sys
 
 
 def log_job(job_name,
@@ -53,3 +55,27 @@ def log_job(job_name,
             end_time
 
         ])
+
+
+def get_logger(name: str) -> logging.Logger:
+    """
+    Create and return a configured logger.
+    """
+
+    logger = logging.getLogger(name)
+
+    if logger.hasHandlers():
+        return logger
+
+    logger.setLevel(logging.INFO)
+
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+    )
+
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(console_handler)
+
+    return logger

@@ -3,10 +3,12 @@ from pyspark.sql.functions import *
 
 from datetime import datetime
 
-from common.logger import log_job
+from common.logger import log_job, get_logger
 from common.utils import get_batch_id
 
 from config.customer_config import *
+
+logger = get_logger(__name__)
 
 
 def customer_scd2(batch_id, spark=None):
@@ -265,6 +267,9 @@ def customer_scd2(batch_id, spark=None):
         HUB_PATH
 
     )
+
+    logger.info("SCD2 Load Completed")
+    logger.info(f"Current Records : {final_count}")
 
     end_time = datetime.now()
 

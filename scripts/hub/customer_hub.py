@@ -3,10 +3,12 @@ from pyspark.sql.functions import *
 
 from datetime import datetime
 
-from common.logger import log_job
+from common.logger import log_job, get_logger
 from common.utils import get_batch_id
 
 from config.customer_config import *
+
+logger = get_logger(__name__)
 
 
 def customer_hub(batch_id, spark=None):
@@ -25,6 +27,7 @@ def customer_hub(batch_id, spark=None):
         BRONZE_PATH
 
     )
+    #raise Exception("Testing exception handling")
 
     trim_df = bronze_df.select(
 
@@ -144,23 +147,16 @@ def customer_hub(batch_id, spark=None):
 
     )
 
-    print("Hub Load Completed")
+    logger.info("Hub Load Completed")
 
-    print(
+    accepted_count = accepted_df.count()
+    rejected_count = rejected_df.count()
 
-        "Accepted :",
+    logger.info(f"Accepted : {accepted_count}")
+    logger.info(f"Rejected : {rejected_count}")
 
-        accepted_df.count()
-
-    )
-
-    print(
-
-        "Rejected :",
-
-        rejected_df.count()
-
-    )
+    if rejected_count > 0:
+        logger.warning("Rejected records found.")
 
     end_time = datetime.now()
 
@@ -172,9 +168,9 @@ def customer_hub(batch_id, spark=None):
 
         input_count=bronze_df.count(),
 
-        accepted_count=accepted_df.count(),
+        accepted_count=accepted_count,
 
-        rejected_count=rejected_df.count(),
+        rejected_count=rejected_count,
 
         status="SUCCESS",
 

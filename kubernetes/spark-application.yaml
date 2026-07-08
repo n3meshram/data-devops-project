@@ -19,7 +19,7 @@ spec:
 
   mode: cluster
 
-  image: customer-etl:latest
+  image: customer-etl:v1.0
 
   imagePullPolicy: IfNotPresent
 

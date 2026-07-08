@@ -3,9 +3,11 @@ from pyspark.sql.functions import *
 
 from datetime import datetime
 
-from common.logger import log_job
+from common.logger import log_job, get_logger
 from common.utils import get_batch_id
 from config.customer_config import *
+
+logger = get_logger(__name__)
 
 
 def customer_bronze(batch_id, spark=None):
@@ -75,24 +77,13 @@ def customer_bronze(batch_id, spark=None):
         )
 
 
-        print(
-
-            "Bronze Load Completed"
-
-        )
-
+        logger.info("Bronze Load Completed")
 
     except Exception as e:
 
         status = "FAILED"
 
-        print(
-
-            "Error :",
-
-            e
-
-        )
+        logger.error("Failed to load Bronze layer.")
 
 
     finally:

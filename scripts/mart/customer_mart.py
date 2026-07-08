@@ -3,10 +3,12 @@ from pyspark.sql.functions import *
 
 from datetime import datetime
 
-from common.logger import log_job
+from common.logger import log_job, get_logger
 from common.utils import get_batch_id
 
 from config.customer_config import *
+
+logger = get_logger(__name__)
 
 
 def customer_mart(batch_id, spark=None):
@@ -119,6 +121,7 @@ def customer_mart(batch_id, spark=None):
 
     end_time = datetime.now()
 
+    mart_count = mart_df.count()
 
     log_job(
 
@@ -128,7 +131,7 @@ def customer_mart(batch_id, spark=None):
 
         input_count=hub_df.count(),
 
-        accepted_count=mart_df.count(),
+        accepted_count=mart_count,
 
         rejected_count=0,
 
@@ -140,16 +143,8 @@ def customer_mart(batch_id, spark=None):
 
     )
 
-
-    print("Mart Load Completed")
-
-    print(
-
-        "Current Records :",
-
-        mart_df.count()
-
-    )
+    logger.info("Mart Load Completed")
+    logger.info(f"Current Records : {mart_count}")
 
 
     if should_stop_spark:

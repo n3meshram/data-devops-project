@@ -5,33 +5,33 @@ pipeline {
     stages {
 
         stage('Checkout') {
-
             steps {
-
-                checkout scm
-
+                echo 'Checking out source code...'
             }
+        }
 
+        stage('Verify Python') {
+            steps {
+                bat 'python --version'
+            }
         }
 
         stage('Build Docker Image') {
-
             steps {
-
-                bat 'docker build -t customer-etl .'
-
+                bat 'docker build -t customer-etl:v1.0 .'
             }
-
         }
 
-        stage('Run ETL Pipeline') {
+    }
 
-            steps {
+    post {
 
-                bat 'docker run customer-etl'
+        success {
+            echo 'Pipeline completed successfully.'
+        }
 
-            }
-
+        failure {
+            echo 'Pipeline failed.'
         }
 
     }
