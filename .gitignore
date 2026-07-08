@@ -1,19 +1,66 @@
+# ==========================
+# Python
+# ==========================
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 
-*.crc
+# Virtual Environments
+venv/
+.venv/
+env/
 
-.ipynb_checkpoints/
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
 
-data/bronze/*
-!data/bronze/.gitkeep
+# ==========================
+# OS Files
+# ==========================
+.DS_Store
+Thumbs.db
 
-data/hub/*
-!data/hub/.gitkeep
+# ==========================
+# Python Cache
+# ==========================
+.pytest_cache/
+.coverage
+htmlcov/
 
-data/mart/*
-!data/mart/.gitkeep
+# ==========================
+# Spark
+# ==========================
+spark-warehouse/
+metastore_db/
 
-data/reject/*
-!data/reject/.gitkeep
+# ==========================
+# Logs
+# ==========================
+logs/*.csv
+*.log
 
-logs/job_log.csv
+# ==========================
+# Environment Variables
+# ==========================
+.env
+
+# ==========================
+# Terraform
+# ==========================
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# ==========================
+# Docker
+# ==========================
+*.tar
+
+# Pipeline Output
+data/bronze/
+data/hub/
+data/mart/
+data/reject/

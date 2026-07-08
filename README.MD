@@ -1,245 +1,115 @@
-# 🚀 Customer ETL Pipeline using PySpark, Docker & Kubernetes
+# Customer ETL Pipeline using PySpark, Docker & Kubernetes
 
-A production-style ETL pipeline built with **PySpark**, **Docker**, **Kubernetes**, and the **Spark Operator**.
-
-This project demonstrates how to execute a distributed Spark ETL pipeline on Kubernetes using Spark Operator. The pipeline processes customer data through multiple layers following modern Data Engineering practices.
+A production-style **Customer ETL Pipeline** built using **PySpark**, **Docker**, and **Kubernetes**. The project demonstrates how raw customer data is processed through multiple data engineering layers (Bronze, Hub, SCD Type 2, and Mart) using Spark running on Kubernetes.
 
 ---
 
-# 📌 Project Overview
+# Project Overview
 
-This project reads customer data from a CSV file, performs multiple ETL transformations, and stores the output in Parquet format.
+This project simulates a real-world Data Engineering pipeline where customer data is ingested, validated, transformed, and prepared for business reporting.
 
-Current Pipeline:
-
-```
-Customer CSV
-      │
-      ▼
- Bronze Layer
-      │
-      ▼
- Hub Layer
-      │
-      ▼
- SCD Type 2
-      │
-      ▼
- Mart Layer
-```
-
-The project is containerized using Docker and executed inside Kubernetes using Spark Operator.
+The pipeline is containerized using Docker and deployed on Kubernetes using the Spark Operator.
 
 ---
 
-# 🚀 Technologies Used
+# Architecture
 
-- Python 3
-- PySpark 4.0
-- Apache Spark
-- Docker
-- Kubernetes
+```
+                  Customer CSV
+                       │
+                       ▼
+                Bronze Layer
+          (Raw Data Validation)
+                       │
+                       ▼
+                  Hub Layer
+        (Unique Business Keys)
+                       │
+                       ▼
+              SCD Type 2 Layer
+         (Historical Tracking)
+                       │
+                       ▼
+                 Mart Layer
+        (Business Reporting Data)
+                       │
+                       ▼
+          Power BI / Tableau / BI
+```
+
+---
+
+# Technology Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python | Programming Language |
+| PySpark | Distributed Data Processing |
+| Apache Spark 4.0 | ETL Engine |
+| Docker | Containerization |
+| Kubernetes | Container Orchestration |
+| Spark Operator | Running Spark on Kubernetes |
+| Git & GitHub | Version Control |
+| Parquet | Storage Format |
+| CSV | Source Data |
+
+---
+
+# Project Features
+
+- Customer ETL Pipeline
+- Bronze Layer
+- Hub Layer
+- SCD Type 2
+- Mart Layer
+- Dockerized Spark Application
+- Kubernetes Deployment
 - Spark Operator
-- YAML
-- Git
-- GitHub
+- Persistent Volume Claim (PVC)
+- RBAC Configuration
+- Batch Logging
+- Modular Project Structure
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```
-project1/
-
+customer-etl/
 │
 ├── common/
-│     ├── logger.py
-│     └── utils.py
+│   ├── logger.py
+│   └── utils.py
 │
 ├── config/
-│     └── customer_config.py
+│   └── customer_config.py
 │
 ├── data/
-│     ├── input/
-│     ├── bronze/
-│     ├── hub/
-│     ├── mart/
-│     └── logs/
+│   ├── bronze/
+│   ├── hub/
+│   ├── mart/
+│   ├── reject/
+│   └── source/
 │
 ├── kubernetes/
-│     ├── namespace.yaml
-│     ├── spark-application.yaml
-│     ├── spark-role.yaml
-│     ├── spark-rbac.yaml
-│     ├── spark-pi.yaml
-│     └── pvc.yaml
+│   ├── spark-application.yaml
+│   ├── spark-role.yaml
+│   ├── spark-rbac.yaml
+│   └── pvc.yaml
+│
+├── logs/
+│   └── job_log.csv
 │
 ├── scripts/
-│     ├── bronze/
-│     ├── hub/
-│     └── mart/
-│
-├── tests/
+│   ├── bronze/
+│   ├── hub/
+│   └── mart/
 │
 ├── Dockerfile
 ├── requirements.txt
 ├── run_pipeline.py
-├── Jenkinsfile
 └── README.md
 ```
-
----
-
-# 🛠 Prerequisites
-
-Install the following before running the project.
-
-- Docker Desktop
-- Kubernetes (Docker Desktop)
-- kubectl
-- Helm
-- Python 3.10+
-- Git
-
-Verify installation
-
-```
-docker --version
-
-kubectl version
-
-helm version
-
-python --version
-```
-
----
-
-# Clone Repository
-
-```
-git clone https://github.com/n3meshram/data-devops-project.git
-
-cd project1
-```
-
----
-
-# Build Docker Image
-
-```
-docker build -t customer-etl .
-```
-
-Verify image
-
-```
-docker images
-```
-
----
-
-# Install Spark Operator
-
-```
-helm repo add spark-operator https://kubeflow.github.io/spark-operator
-
-helm repo update
-```
-
-Install
-
-```
-helm install spark-operator spark-operator/spark-operator \
---namespace spark-operator \
---create-namespace
-```
-
-Verify
-
-```
-kubectl get pods -n spark-operator
-```
-
----
-
-# Create Kubernetes Resources
-
-```
-kubectl apply -f kubernetes/namespace.yaml
-
-kubectl apply -f kubernetes/spark-rbac.yaml
-
-kubectl apply -f kubernetes/spark-role.yaml
-```
-
-Verify
-
-```
-kubectl get namespace
-
-kubectl get role -n spark-jobs
-
-kubectl get serviceaccount -n spark-jobs
-```
-
----
-
-# Run Spark Application
-
-Deploy
-
-```
-kubectl apply -f kubernetes/spark-application.yaml
-```
-
-Check status
-
-```
-kubectl get sparkapplication -n spark-jobs
-```
-
-Watch
-
-```
-kubectl get sparkapplication -w -n spark-jobs
-```
-
----
-
-# View Driver Logs
-
-```
-kubectl logs customer-etl-driver -n spark-jobs
-```
-
----
-
-# View Executor Logs
-
-```
-kubectl get pods -n spark-jobs
-
-kubectl logs <executor-pod-name> -n spark-jobs
-```
-
----
-
-# Verify Output
-
-Example
-
-```
-data/
-
-bronze/
-
-hub/
-
-mart/
-```
-
-Verify generated Parquet files.
 
 ---
 
@@ -248,134 +118,158 @@ Verify generated Parquet files.
 ```
 Customer CSV
 
-        │
+↓
 
-        ▼
+Bronze Layer
 
-Customer Bronze
+↓
 
-        │
+Hub Layer
 
-        ▼
+↓
 
-Customer Hub
+SCD Type 2
 
-        │
+↓
 
-        ▼
+Mart Layer
 
-Customer SCD2
+↓
 
-        │
-
-        ▼
-
-Customer Mart
+Business Reports
 ```
 
 ---
 
-# Features
+# Running the Project
 
-✔ Spark on Kubernetes
+## Clone Repository
 
-✔ Dockerized ETL
+```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
 
-✔ Spark Operator
-
-✔ RBAC Configuration
-
-✔ Bronze Layer
-
-✔ Hub Layer
-
-✔ SCD Type 2
-
-✔ Mart Layer
-
-✔ Logging
-
-✔ Modular Code Structure
-
-✔ Production Folder Structure
+cd customer-etl
+```
 
 ---
 
-# Useful Commands
+## Build Docker Image
 
-Delete application
-
-```
-kubectl delete sparkapplication customer-etl -n spark-jobs
+```bash
+docker build -t customer-etl:v1.0 .
 ```
 
-Delete pods
+---
 
-```
-kubectl delete pods --all -n spark-jobs
-```
+## Verify Docker Image
 
-Watch pods
-
-```
-kubectl get pods -w -n spark-jobs
+```bash
+docker images
 ```
 
-Driver logs
+---
 
+## Deploy to Kubernetes
+
+```bash
+kubectl apply -f kubernetes/pvc.yaml
+
+kubectl apply -f kubernetes/spark-role.yaml
+
+kubectl apply -f kubernetes/spark-rbac.yaml
+
+kubectl apply -f kubernetes/spark-application.yaml
 ```
+
+---
+
+## Monitor Spark Job
+
+```bash
+kubectl get sparkapplication -n spark-jobs
+
+kubectl get pods -n spark-jobs
+
 kubectl logs customer-etl-driver -n spark-jobs
 ```
+
+---
+
+# Output
+
+The pipeline generates the following output folders.
+
+```
+data/
+
+├── bronze/
+
+├── hub/
+
+├── mart/
+
+└── reject/
+```
+
+---
+
+# Logging
+
+Each pipeline stage records execution details including:
+
+- Job Name
+- Batch ID
+- Input Count
+- Accepted Count
+- Rejected Count
+- Status
+- Start Time
+- End Time
+
+---
+
+# Kubernetes Components
+
+The project uses:
+
+- SparkApplication
+- Driver Pod
+- Executor Pods
+- Persistent Volume Claim (PVC)
+- ServiceAccount
+- Role
+- RoleBinding
 
 ---
 
 # Troubleshooting
 
-### Driver Pod Failed
+Common commands:
 
-```
-kubectl logs customer-etl-driver -n spark-jobs
-```
+```bash
+kubectl get sparkapplication -n spark-jobs
 
----
+kubectl describe sparkapplication customer-etl -n spark-jobs
 
-### Executor Failed
-
-```
 kubectl get pods -n spark-jobs
 
-kubectl logs <executor-name> -n spark-jobs
-```
+kubectl logs customer-etl-driver -n spark-jobs
 
----
-
-### SparkApplication Status
-
-```
-kubectl describe sparkapplication customer-etl -n spark-jobs
-```
-
----
-
-### Spark Operator Logs
-
-```
-kubectl logs deployment/spark-operator-controller -n spark-operator
+kubectl get svc -n spark-jobs
 ```
 
 ---
 
 # Future Improvements
 
-- Helm Chart
 - CI/CD using GitHub Actions
-- Jenkins Pipeline
+- Unit Testing with Pytest
+- Airflow Orchestration
+- Amazon S3 Integration
 - Delta Lake
-- AWS S3 Storage
-- Airflow Scheduling
-- Monitoring using Prometheus & Grafana
-- Unit Testing
-- Integration Testing
+- Prometheus Monitoring
+- Grafana Dashboards
+- Spark History Server
 
 ---
 
@@ -391,4 +285,4 @@ GitHub: https://github.com/n3meshram
 
 # License
 
-This project is created for learning and demonstration purposes.
+This project is licensed under the MIT License.
